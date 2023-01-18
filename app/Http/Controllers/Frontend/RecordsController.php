@@ -1,19 +1,44 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
-use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\RecordRequest;
-use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
-class DataReceiveController extends Controller
+class RecordsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index (Request $request)
     {
-        return view('frontend/form');
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        if (!empty($token))
+        {
+            $user = $token->tokenable;
+        }
+        if (!empty($request->bearerToken()) && !empty($user))
+        {
+            return view('frontend/form');
+        } else {
+            return abort(403);
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
         $token = PersonalAccessToken::findToken($request->bearerToken());
         if (!empty($token))
         {

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\RecordsController as FrontendRC;
+use App\Http\Controllers\Backend\RecordsController as BackendRC;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::match(['get', 'post'], 'data', [App\Http\Controllers\Frontend\DataReceiveController::class, 'index']);
-Route::post('data', [App\Http\Controllers\Frontend\DataReceiveController::class, 'store'])->name('input');
+Route::resource('data', FrontendRC::class)->only(['index', 'create','store']);
+Route::resource('records', BackendRC::class)->except('create');
