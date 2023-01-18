@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::match(['get', 'post'], 'data', [App\Http\Controllers\Frontend\DataReceiveController::class, 'index']);
+Route::post('data', [App\Http\Controllers\Frontend\DataReceiveController::class, 'store'])->name('input');
